@@ -25,7 +25,13 @@ if (WEBGL.isWebGLAvailable()) {
   document.body.appendChild(renderer.domElement)
   renderer.shadowMap.enabled = true
 
-  //OrbitControls 추가
+  //OrbitControls 추가 -> shift를 누르면 카메라 자체 이동이 가능
+  const controls = new OrbitControls(camera, renderer.domElement)
+  controls.minDistance = 2
+  controls.maxDistance = 4
+  controls.maxPolarAngle = 2
+  controls.maxPolarAngle = Math.PI / 2 // 1.6보다 이 방식을 추천
+  controls.update()
 
   //도형 추가
   // const geometry = new THREE.SphereGeometry(0.5, 32, 16)
@@ -98,12 +104,23 @@ if (WEBGL.isWebGLAvailable()) {
   // scene.add(spotLight)
   // spotLight.castShadow = true // 그림자 O
 
-  function render(time) {
+  // function render(time) {
+  //   renderer.render(scene, camera)
+
+  //   requestAnimationFrame(render)
+  // }
+
+  function animate() {
+    cube.rotation.y += 0.1
+    cube2.rotation.y += 0.01
+    cube2.rotation.x += 0.01
+    requestAnimationFrame(animate)
+
+    controls.update()
+
     renderer.render(scene, camera)
-
-    requestAnimationFrame(render)
   }
-
+  animate()
   requestAnimationFrame(render)
   //반응형 처리
   function onWindowResize() {
